@@ -1,71 +1,31 @@
-import { useEffect, useState } from 'react'
-import { getHealth, type HealthStatus } from './api/client'
-import './App.css'
-
-type Status = 'loading' | 'ok' | 'error'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { ProtectedRoute, PublicOnlyRoute } from './auth/ProtectedRoute'
+import { AppShell } from './components/AppShell'
+import { Login } from './pages/Login'
+import { Signup } from './pages/Signup'
+import { Dashboard } from './pages/Dashboard'
+import { ContentList } from './pages/ContentList'
+import { ContentEditor } from './pages/ContentEditor'
 
 function App() {
-  const [status, setStatus] = useState<Status>('loading')
-  const [health, setHealth] = useState<HealthStatus | null>(null)
-  const [error, setError] = useState<string | null>(null)
-
-  async function checkHealth() {
-    setStatus('loading')
-    setError(null)
-    try {
-      const data = await getHealth()
-      setHealth(data)
-      setStatus('ok')
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error')
-      setStatus('error')
-    }
-  }
-
-  useEffect(() => {
-    void checkHealth()
-  }, [])
-
   return (
-    <main className="app">
-      <h1>iBeVisible</h1>
-      <p className="subtitle">POC — frontend &amp; backend wiring check</p>
+    <Routes>
+      <Route element={<PublicOnlyRoute />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Route>
 
-      <section className="card">
-        <h2>Backend health</h2>
-        <p className={`status status--${status}`}>
-          <span className="dot" aria-hidden />
-          {status === 'loading' && 'Checking…'}
-          {status === 'ok' && 'Connected'}
-          {status === 'error' && 'Unavailable'}
-        </p>
+      <Route element={<ProtectedRoute />}>
+        <Route element={<AppShell />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/content" element={<ContentList />} />
+          <Route path="/content/new" element={<ContentEditor />} />
+          <Route path="/content/:id/edit" element={<ContentEditor />} />
+        </Route>
+      </Route>
 
-        {status === 'ok' && health && (
-          <dl className="details">
-            <dt>Service</dt>
-            <dd>{health.service}</dd>
-            <dt>Status</dt>
-            <dd>{health.status}</dd>
-            <dt>Uptime</dt>
-            <dd>{health.uptime.toFixed(1)}s</dd>
-            <dt>Checked at</dt>
-            <dd>{new Date(health.timestamp).toLocaleTimeString()}</dd>
-          </dl>
-        )}
-
-        {status === 'error' && (
-          <p className="error">
-            {error}
-            <br />
-            Is the backend running on <code>http://localhost:3000</code>?
-          </p>
-        )}
-
-        <button onClick={() => void checkHealth()} disabled={status === 'loading'}>
-          Re-check
-        </button>
-      </section>
-    </main>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
 

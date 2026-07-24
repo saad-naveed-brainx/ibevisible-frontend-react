@@ -1,111 +1,283 @@
+/* =========================================================================
+   iBeVisible — design system
+   Minimal / monochrome, editorial. Grayscale surface with a single restrained
+   violet accent (the brand), a serif for display headings, Inter for UI.
+   ========================================================================= */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Surfaces & ink — warm near-neutral grays for an editorial paper feel */
+  --bg: #fbfbfa;
+  --surface: #ffffff;
+  --surface-2: #f6f5f3;
+  --surface-hover: #f1f0ed;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --text: #17161a; /* headings / primary ink */
+  --text-body: #3f3d45; /* body copy */
+  --text-muted: #6f6c76; /* secondary */
+  --text-subtle: #9a97a1; /* tertiary / meta */
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  --border: #eae8e4;
+  --border-strong: #dcd9d3;
+
+  --ink: #17161a; /* primary button bg */
+  --ink-contrast: #ffffff;
+
+  /* Single brand accent — used sparingly (focus, active, highlights) */
+  --accent: #7c3aed;
+  --accent-soft: rgba(124, 58, 237, 0.1);
+  --accent-ring: rgba(124, 58, 237, 0.35);
+
+  --danger: #b3261e;
+  --danger-soft: rgba(179, 38, 30, 0.08);
+  --success: #1f7a54;
+  --warn: #9a6a00;
+
+  /* Type */
+  --sans:
+    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --mono: ui-monospace, 'SF Mono', 'Menlo', Consolas, monospace;
+
+  /* Elevation — whisper-soft, monochrome */
+  --shadow-sm: 0 1px 2px rgba(23, 22, 26, 0.04);
+  --shadow-md:
+    0 1px 3px rgba(23, 22, 26, 0.05), 0 8px 24px -12px rgba(23, 22, 26, 0.12);
+  --shadow-lg: 0 12px 40px -12px rgba(23, 22, 26, 0.18);
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+
+  --sidebar-w: 264px;
+  --topbar-h: 64px;
+  --page-max: 1180px;
+
   color-scheme: light dark;
-  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-body);
   background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01';
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+    --bg: #0e0e11;
+    --surface: #161619;
+    --surface-2: #1c1c20;
+    --surface-hover: #222227;
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+    --text: #f4f3f5;
+    --text-body: #cfccd4;
+    --text-muted: #a1a0a8;
+    --text-subtle: #74737c;
+
+    --border: #26262b;
+    --border-strong: #34343b;
+
+    --ink: #f4f3f5;
+    --ink-contrast: #131316;
+
+    --accent: #b794f6;
+    --accent-soft: rgba(183, 148, 246, 0.14);
+    --accent-ring: rgba(183, 148, 246, 0.4);
+
+    --danger: #f2a29c;
+    --danger-soft: rgba(242, 162, 156, 0.1);
+    --success: #6bc79c;
+    --warn: #e0b96b;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md:
+      0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 12px 40px -12px rgba(0, 0, 0, 0.7);
   }
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
   box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
 }
 
 body {
   margin: 0;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+#root {
+  min-height: 100svh;
+  isolation: isolate;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+/* Headings */
+h1,
+h2,
+h3,
+h4 {
+  color: var(--text);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 0;
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
+
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+/* Focus — one consistent accent ring everywhere */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent-ring);
+  border-radius: var(--radius-sm);
+}
+
+/* Thin, quiet scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+  border: 3px solid var(--bg);
+}
+
+/* Shared status pill */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.7;
+}
+.pill--published {
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 35%, transparent);
+  background: color-mix(in srgb, var(--success) 8%, transparent);
+}
+.pill--draft {
+  color: var(--text-muted);
+}
+
+/* Tag input (shared component) */
+.taginput {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  padding: 6px 8px;
+  transition: border-color 0.15s ease;
+}
+.taginput:focus-within {
+  border-color: var(--accent);
+}
+.taginput.is-disabled {
+  opacity: 0.6;
+}
+.taginput-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 3px 4px 3px 9px;
+}
+.taginput-chip button {
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text-subtle);
   font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  line-height: 1;
+  cursor: pointer;
+}
+.taginput-chip button:hover {
+  background: var(--surface-hover);
+  color: var(--danger);
+}
+.taginput input {
+  flex: 1;
+  min-width: 90px;
+  border: none;
+  background: transparent;
+  outline: none;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  padding: 4px 2px;
+}
+.taginput input::placeholder {
+  color: var(--text-subtle);
+}
+
+/* Utility: full-screen centered loader */
+.app-loading {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  font-size: 14px;
 }
